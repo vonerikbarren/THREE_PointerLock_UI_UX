@@ -38,6 +38,21 @@
 			color: #8ff;
 		}
 
+	@keyframes float {
+		0% {
+			box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+			transform: translatey(0px);
+		}
+		50% {
+			box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+			transform: translatey(-10px);
+		}
+		100% {
+			box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+			transform: translatey(0px);
+		}
+	}
+
 		#menu {
 			position: absolute;
 			bottom: 20px;
@@ -59,6 +74,7 @@
 			text-align: center;
 			line-height: normal;
 			cursor: default;
+			/* animation: float 15s ease-in-out infinite; */
       /* transform: rotateY(150deg) */
 		}
 
@@ -106,6 +122,7 @@
 			border: 0px;
 			padding: 5px 10px;
 			cursor: pointer;
+			animation: float 5s ease-in-out infinite;
 		}
 
 		button:hover {
@@ -139,6 +156,8 @@
       <div id="container"></div>
       <!-- Menu -->
       <div id="menu">
+
+
 
         <button id="table">TABLE</button>
         <button id="sphere">SPHERE</button>
@@ -178,7 +197,7 @@
 			import { CSS3DRenderer, CSS3DObject } from './libraries/renderers/CSS3DRenderer.js';
 
       const table = [
-			'The first Test', 'Hydrogen', '1.00794', 1, 1,
+			'ΔΗΝ', 'A Revelation of the mind', '1.00794', 1, 1,
 			'He', 'Helium', '4.002602', 18, 1,
 			'Li', 'Lithium', '6.941', 1, 2,
 			'Be', 'Beryllium', '9.012182', 2, 2,
@@ -302,7 +321,7 @@
 			let camera, scene, renderer, cssrenderer, controls, textureLoader, object;
 
 			// Test Meshes
-			let mesh_gridbox_Tester
+			let mesh_gridbox_Tester, mesh_gridbox2_Tester, mesh_Tube01, mesh_Torus01
 
 			// Objects init
 			const objects = [];
@@ -380,9 +399,14 @@
 
 				// Textures Setup
 				textureLoader = new THREE.TextureLoader();
-				const testImg01 = textureLoader.load('./assets/img/backgrounds/Grid06.png')
+				const testImg01 = textureLoader.load('./assets/img/backgrounds/Grids/Grid06.png')
+				const testImg02 = textureLoader.load('./assets/img/backgrounds/Grids/Grid19.02.png')
+				const testImg03 = textureLoader.load('./assets/textures/crate.gif')
+				const testImg04 = textureLoader.load('./assets/img/backgrounds/Wood/material_wood.jpg')
 
-				const testImg02 = textureLoader.load('./assets/img/backgrounds//Grids/Grid03.png')
+
+				// Particle Setup
+				const particleTexture01 = textureLoader.load('./assets/textures/textures_lib/particles/1.png')
 
 				// Blocker and Instructions Setup
 				const blocker = document.getElementById( 'blocker' );
@@ -676,9 +700,9 @@
 				// Geometries
 				// -----------------
 				const geo_timeSphere_L2 = new THREE.SphereGeometry(3000, 32, 32)
-				const mat_timeSphere_L2 = new THREE.MeshBasicMaterial({ map: testImg01, side: THREE.DoubleSide });
+				const mat_timeSphere_L2 = new THREE.MeshBasicMaterial({ map: testImg03, side: THREE.DoubleSide });
 				mesh_timeSphere_L2 = new THREE.Mesh(geo_timeSphere_L2, mat_timeSphere_L2)
-				mat_timeSphere_L2.transparent = true;
+				mat_timeSphere_L2.transparent = false;
 				// mat_timeSphere_L2.alphaMap = timeSphereImg_01
 				mat_timeSphere_L2.wireframe = true;
 				mesh_timeSphere_L2.position.set(0, 20000, 200)
@@ -692,6 +716,75 @@
 				mesh_gridbox_Tester.position.set(0, 49000, 0);
 				scene.add(mesh_gridbox_Tester);
 				objects.push(mesh_gridbox_Tester)
+
+				// Width, Height, Depth
+				const geo_gridbox2_Tester = new THREE.BoxGeometry(5000, 1000, 5000, 64, 64, 64)
+				const mat_gridbox2_Tester = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
+				mesh_gridbox2_Tester = new THREE.Mesh(geo_gridbox2_Tester, mat_gridbox2_Tester);
+				mat_gridbox2_Tester.transparent = false;
+				mat_gridbox2_Tester.alphaMap = testImg04;
+				mesh_gridbox2_Tester.position.set(30000, 30000, 0);
+				scene.add(mesh_gridbox2_Tester);
+				objects.push(mesh_gridbox2_Tester)
+
+
+				const geo_Tube01 = new THREE.CylinderGeometry(5000, 5000, 500, 128, 1, true)
+				const mat_Tube01 = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
+				mesh_Tube01 = new THREE.Mesh(geo_Tube01, mat_Tube01);
+				mat_Tube01.transparent = false;
+				mat_Tube01.alphaMap = testImg04;
+				mesh_Tube01.position.set(-60000, 4026, 0);
+				mesh_Tube01.rotateX( - Math.PI / 2 );
+				mesh_Tube01.scale.y = 90
+				scene.add(mesh_Tube01);
+				objects.push(mesh_Tube01)
+
+
+				// 2nd param = Donut = 5000
+				const geo_Torus01 = new THREE.TorusGeometry(15000, 80000, 16, 32, Math.PI * 2 )
+				const mat_Torus01 = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
+				mesh_Torus01 = new THREE.Mesh(geo_Torus01, mat_Torus01);
+				mat_Torus01.transparent = false;
+				mat_Torus01.alphaMap = testImg02;
+				mesh_Torus01.position.set(0, 40000, 0); // 9000 = floor w/o cut
+				mesh_Torus01.rotateX( - Math.PI / 2 );
+				// mesh_Torus01.scale.y = 90
+				scene.add(mesh_Torus01);
+				objects.push(mesh_Torus01)
+
+
+
+
+				// Particle Geometry - Defined @ beginnning of init()
+				const particlesGeometry = new THREE.BufferGeometry();
+				const count = 5000
+				const positions = new Float32Array(count * 3);
+				const colors = new Float32Array(count * 3);
+
+				// Large Number here = The box dimensions all at the same time. 
+				for (let i = 0; i < count * 3; i++) {
+					positions[i] = (Math.random() - 0.5) * 100000
+					colors[i] = Math.random()
+				}
+
+				particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+				particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors,3))
+
+				// Particle Material init()
+				const particlesMaterial = new THREE.PointsMaterial()
+				particlesMaterial.size = 100
+				particlesMaterial.sizeAttenuation = true;
+				// particlesMaterial.color = new THREE.Color('#8ff') // neonblue
+				particlesMaterial.color = new THREE.Color('#FFD700') // Gold
+				particlesMaterial.transparent = true
+				particlesMaterial.alphaMap = particleTexture01
+				particlesMaterial.depthWrite = false
+				particlesMaterial.blending = THREE.AdditiveBlending
+				particlesMaterial.vertextColors = true
+
+				const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+				particles.position.set(0, 40000, 0)
+				scene.add(particles);
 
 
 
@@ -750,9 +843,9 @@
 				folderCamera.add(camera.position, 'z').min(-50000).max(50000).step(0.001).name('z-camera')
 
 				const folderPositions = gui.addFolder('Positions')
-				folderPositions.add(floor.position, 'x').min(-5000).max(50000).step(0.001).name('x-position');
-				folderPositions.add(floor.position, 'y').min(-5000).max(50000).step(0.001).name('y-position');
-				folderPositions.add(floor.position, 'z').min(-5000).max(50000).step(0.001).name('z-position');
+				folderPositions.add(mesh_Tube01.position, 'x').min(-5000).max(50000).step(0.001).name('x-position');
+				folderPositions.add(mesh_Tube01.position, 'y').min(-5000).max(50000).step(0.001).name('y-position');
+				folderPositions.add(mesh_Tube01.position, 'z').min(-5000).max(50000).step(0.001).name('z-position');
 
 
 				// CSS3DRenderer Config_01
@@ -845,11 +938,11 @@
 				if ( controls.isLocked === true ) {
 
 					raycaster.ray.origin.copy( controls.getObject().position );
-					raycaster.ray.origin.y -= 30;
+					raycaster.ray.origin.y -= 300; // Camera's Height when landed
 
 					const intersections = raycaster.intersectObjects( objects, false );
 
-					const onObject = intersections.length > 0;
+					const onObject = intersections.length > 0.001;
 
 					const delta = ( time - prevTime ) / 1000;
 
@@ -857,7 +950,7 @@
 					velocity.z -= velocity.z * 1.0 * delta;
 
           // Gravity Strength
-					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+					velocity.y -= 9.8 * 70.0 * delta; // 100.0 = mass
 
 					direction.z = Number( moveForward ) - Number( moveBackward );
 					direction.x = Number( moveRight ) - Number( moveLeft );
@@ -885,7 +978,7 @@
 					if ( controls.getObject().position.y < 10 ) {
 
 						velocity.y = 0;
-						controls.getObject().position.y = 10;
+						controls.getObject().position.y = 1;
 
 						canJump = true;
 
@@ -900,6 +993,8 @@
 				// ###########################
 
 				mesh_timeSphere_L2.rotation.y = time * 0.0005;
+				mesh_Tube01.rotation.y = time * 0.0001
+				mesh_Torus01.rotation.z = time * 0.0001
 
 				// Only for Testing
 				// mesh_gridbox_Tester.rotation.y = time * 0.0001;
