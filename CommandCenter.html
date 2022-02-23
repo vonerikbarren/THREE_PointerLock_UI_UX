@@ -71,9 +71,9 @@
 		.tableCell {
 			width: 360px;
 			height: 360px;
-			box-shadow: 0px 0px 12px rgba(0, 255, 187, 0.87);
-			border: 1px solid rgba(0, 238, 255, 0.25);
-   background-color: rgba(0, 255, 187, 0.87);
+			box-shadow: 0px 0px 12px rgba(225, 0, 255, 0.87);
+			border: 1px solid rgba(234, 0, 255, 0.25);
+   background-color: rgba(225, 0, 255, 0.87);
 			font-family: Helvetica, sans-serif;
 			text-align: center;
 			line-height: normal;
@@ -95,8 +95,8 @@
 			right: 0px;
 			font-size: 60px;
 			font-weight: bold;
-			color: rgba(0, 255, 208, 0.75);
-			text-shadow: 0 0 10px rgba(0, 255, 179, 0.95);
+			color: rgba(225, 0, 255, 0.75);
+			text-shadow: 0 0 10px rgba(251, 255, 0, 0.95);
 		}
 
 		.element {
@@ -395,6 +395,9 @@
 
 			// CommandCenterMeshes
 			let mesh_CommandCenterSphere_L0, mesh_mainPlatform_L01
+			let mesh_CCS_Ruler_L0, mesh_OrbitRing01_L01, mesh_OrbitRing02_L01
+			let mesh_OrbitRing03_L01, mesh_OrbitRing04_L01, mesh_OrbitRing05_L01
+			let mesh_Clock01_L01, mesh_GoldGear01_L01
 
 			// Objects init
 			const objects = [];
@@ -481,6 +484,14 @@
 
 				const testImg05 = textureLoader.load('./assets/img/backgrounds/Grids/Grid19.jpg')
 
+				const testImg06 = textureLoader.load('./assets/img/backgrounds/Materials/Gold/GoldWall02.jpeg')
+
+				const Clock01 = textureLoader.load('./assets/img/clocks/Clock02_NoHands01.png')
+
+				const Clock02 = textureLoader.load('./assets/img/clocks/Clock03_A1.png')
+
+				const GearTex01 = textureLoader.load('./assets/img/gears/GoldenGear01.png')
+
 
 				// Particle Setup
 				const particleTexture01 = textureLoader.load('./assets/textures/textures_lib/particles/1.png')
@@ -519,8 +530,8 @@
 
 					const object2CSS = new CSS3DObject(cell);
 					object2CSS.position.x = Math.floor(i % 7) * 500 - 2000;
-				 object2CSS.position.y = ((Math.floor(i / 7) % 7) * 400) + 50000;
-				 object2CSS.position.z = 0;
+				 object2CSS.position.y = ((Math.floor(i / 7) % 7) * 400) + 12366.118;
+				 object2CSS.position.z = -7000;
 
 					scene.add(object2CSS);
 					objectsTest.push(object2CSS);
@@ -581,7 +592,7 @@
 
 				  const objectCSS = new CSS3DObject(element);
 				  objectCSS.position.x = Math.random() * 4000 - 2000;
-				  objectCSS.position.y = Math.random() * 800000 - 2000;
+				  objectCSS.position.y = Math.random() * 12366.118 - 2000;
 				  objectCSS.position.z = Math.random() * 4000 - 2000;
 				  scene.add(objectCSS);
 
@@ -610,11 +621,11 @@
 
           // size of sphere here...
           object.position.setFromSphericalCoords(1500, phi, theta);
-          object.translateY(40000)
+          object.translateY(12366.118)
 
           vector.copy(object.position).multiplyScalar(2);
 
-          object.lookAt(0, 40000, 0);
+          object.lookAt(0, 12366.118, 0);
 
           targets.sphere.push(object);
 
@@ -626,7 +637,7 @@
 			  for (let i = 0, l = objects.length; i < l; i++) {
 
           const theta = (i * 25) * 0.175 + ( Math.PI * 2 );
-          const y = - (i * 1000) + 40050;
+          const y = - (i * 1000) + 12366.118;
 
 
           const object = new THREE.Object3D();
@@ -653,7 +664,7 @@
           const object = new THREE.Object3D();
 
           object.position.x = ((i % 5) * 400) - 800;
-          object.position.y = ((Math.floor(i / 5) % 5) * 400) + 40000;
+          object.position.y = ((Math.floor(i / 5) % 5) * 400) + 12366.118;
           object.position.z = (Math.floor(i / 25)) * 1000 - 2000;
 
           targets.grid.push(object);
@@ -921,7 +932,7 @@
 
 				// Large Number here = The box dimensions all at the same time. 
 				for (let i = 0; i < count * 3; i++) {
-					positions[i] = (Math.random() - 0.5) * 100000
+					positions[i] = (Math.random() - 0.5) * 50000
 					colors[i] = Math.random()
 				}
 
@@ -1012,6 +1023,119 @@
 				CommandCenter.add(mesh_mainPlatform_L01);
 				objects.push(mesh_mainPlatform_L01)
 
+				
+				// # SphereRuler
+				const geo_CCS_Ruler_L0 = new THREE.SphereGeometry(5000, 32, 32)
+				const mat_CCS_Ruler_L0 = new THREE.MeshBasicMaterial({ map: testImg05, side: THREE.DoubleSide });
+				mesh_CCS_Ruler_L0 = new THREE.Mesh(geo_CCS_Ruler_L0, mat_CCS_Ruler_L0)
+				mat_CCS_Ruler_L0.transparent = true;
+				mat_CCS_Ruler_L0.alphaMap = testImg05
+				mat_CCS_Ruler_L0.wireframe = false;
+				mesh_CCS_Ruler_L0.position.set(0, 20000, 200)
+				mesh_CCS_Ruler_L0.scale.set(3, 3, 3)
+				CommandCenter.add(mesh_CCS_Ruler_L0)
+
+
+			
+				//#########################################
+				// Command Center Orbit Ring (CCORs)
+				//#########################################
+				const OrbitRingGroup01 = new THREE.Group()
+
+				// # Thin Torus Template - For TimeReality Also
+				const geo_OrbitRing01_L01 = new THREE.TorusGeometry(13500, 150, 64, 64, Math.PI * 2 )
+				const mat_OrbitRing01_L01 = new THREE.MeshBasicMaterial({ map: testImg06, side: THREE.DoubleSide });
+				mesh_OrbitRing01_L01 = new THREE.Mesh(geo_OrbitRing01_L01, mat_OrbitRing01_L01);
+				mat_OrbitRing01_L01.transparent = false;
+				mat_OrbitRing01_L01.alphaMap = testImg06;
+				mesh_OrbitRing01_L01.position.set(0, 20000, 200); 
+				mesh_OrbitRing01_L01.rotateX( - Math.PI / 2 );
+				mesh_OrbitRing01_L01.rotation.x = 22
+				// mesh_OrbitRing01_L01.scale.y = 90
+				OrbitRingGroup01.add(mesh_OrbitRing01_L01)
+				CommandCenter.add(OrbitRingGroup01)
+
+				const geo_OrbitRing02_L01 = new THREE.TorusGeometry(13500, 150, 64, 64, Math.PI * 2 )
+				const mat_OrbitRing02_L01 = new THREE.MeshBasicMaterial({ map: testImg06, side: THREE.DoubleSide });
+				mesh_OrbitRing02_L01 = new THREE.Mesh(geo_OrbitRing02_L01, mat_OrbitRing02_L01);
+				mat_OrbitRing02_L01.transparent = false;
+				mat_OrbitRing02_L01.alphaMap = testImg06;
+				mesh_OrbitRing02_L01.position.set(0, 20000, 200); 
+				mesh_OrbitRing02_L01.rotateX( - Math.PI / 2 );
+				mesh_OrbitRing02_L01.rotation.x = 22
+				// mesh_OrbitRing02_L01.scale.y = 90
+				OrbitRingGroup01.add(mesh_OrbitRing02_L01)
+				CommandCenter.add(OrbitRingGroup01)
+
+
+				const geo_OrbitRing03_L01 = new THREE.TorusGeometry(13500, 150, 64, 64, Math.PI * 2 )
+				const mat_OrbitRing03_L01 = new THREE.MeshBasicMaterial({ map: testImg06, side: THREE.DoubleSide });
+				mesh_OrbitRing03_L01 = new THREE.Mesh(geo_OrbitRing03_L01, mat_OrbitRing03_L01);
+				mat_OrbitRing03_L01.transparent = false;
+				mat_OrbitRing03_L01.alphaMap = testImg06;
+				mesh_OrbitRing03_L01.position.set(0, 20000, 200); 
+				mesh_OrbitRing03_L01.rotateX( - Math.PI / 2 );
+				mesh_OrbitRing03_L01.rotation.x = 22
+				// mesh_OrbitRing03_L01.scale.y = 90
+				OrbitRingGroup01.add(mesh_OrbitRing03_L01)
+				CommandCenter.add(OrbitRingGroup01)
+
+
+				const geo_OrbitRing04_L01 = new THREE.TorusGeometry(13500, 150, 64, 64, Math.PI * 2 )
+				const mat_OrbitRing04_L01 = new THREE.MeshBasicMaterial({ map: testImg06, side: THREE.DoubleSide });
+				mesh_OrbitRing04_L01 = new THREE.Mesh(geo_OrbitRing04_L01, mat_OrbitRing04_L01);
+				mat_OrbitRing04_L01.transparent = false;
+				mat_OrbitRing04_L01.alphaMap = testImg06;
+				mesh_OrbitRing04_L01.position.set(0, 20000, 200); 
+				mesh_OrbitRing04_L01.rotateX( - Math.PI / 2 );
+				mesh_OrbitRing04_L01.rotation.x = 22
+				// mesh_OrbitRing04_L01.scale.y = 90
+				OrbitRingGroup01.add(mesh_OrbitRing04_L01)
+				CommandCenter.add(OrbitRingGroup01)
+
+
+				const geo_OrbitRing05_L01 = new THREE.TorusGeometry(13500, 150, 64, 64, Math.PI * 2 )
+				const mat_OrbitRing05_L01 = new THREE.MeshBasicMaterial({ map: testImg06, side: THREE.DoubleSide });
+				mesh_OrbitRing05_L01 = new THREE.Mesh(geo_OrbitRing05_L01, mat_OrbitRing05_L01);
+				mat_OrbitRing05_L01.transparent = false;
+				mat_OrbitRing05_L01.alphaMap = testImg06;
+				mesh_OrbitRing05_L01.position.set(0, 20000, 200); 
+				mesh_OrbitRing05_L01.rotateX( - Math.PI / 2 );
+				mesh_OrbitRing05_L01.rotation.x = 14.15
+				// mesh_OrbitRing05_L01.scale.y = 90
+				OrbitRingGroup01.add(mesh_OrbitRing05_L01)
+				CommandCenter.add(OrbitRingGroup01)
+
+				//#########################################
+				// Clocks & Time Variables
+				//#########################################
+				const mainClockGroup01 = new THREE.Group()
+
+				const geo_Clock01_L01 = new THREE.CircleGeometry(1000, 1000)
+				const mat_Clock01_L01 = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide });
+				mesh_Clock01_L01 = new THREE.Mesh(geo_Clock01_L01, mat_Clock01_L01);
+				mat_Clock01_L01.transparent = true;
+				mat_Clock01_L01.alphaMap = Clock02;
+				mesh_Clock01_L01.position.set(0, 12500, 200); 
+				mesh_Clock01_L01.rotateX( - Math.PI / 2 );
+				// mesh_Clock01_L01.scale.y = 90
+				mainClockGroup01.add(mesh_Clock01_L01)
+				CommandCenter.add(mainClockGroup01)
+
+
+				const geo_GoldGear01_L01 = new THREE.CircleGeometry(1000, 1000)
+				const mat_GoldGear01_L01 = new THREE.MeshStandardMaterial({ map: GearTex01, side: THREE.DoubleSide });
+				mesh_GoldGear01_L01 = new THREE.Mesh(geo_GoldGear01_L01, mat_GoldGear01_L01);
+				mat_GoldGear01_L01.transparent = true;
+				mat_GoldGear01_L01.alphaMap = GearTex01;
+				mesh_GoldGear01_L01.position.set(0, 12600, 200); 
+				mesh_GoldGear01_L01.rotateX( - Math.PI / 2 );
+				// mesh_GoldGear01_L01.scale.y = 90
+				mainClockGroup01.add(mesh_GoldGear01_L01)
+				CommandCenter.add(mainClockGroup01)
+				
+				
+
 				// Final Command Push to Scene
 				scene.add(CommandCenter);
 
@@ -1053,7 +1177,7 @@
 				const gui = new GUI(
 					{
 						width: 300,
-						hide: true
+						closed: true
 					}
 				)
 
@@ -1080,7 +1204,22 @@
 				folderMainSettings.add(mesh_mainPlatform_L01.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
 				folderMainSettings.add(mesh_mainPlatform_L01.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
 
-				const folderCamera = gui.addFolder('User Settings');
+				const folderOrbit = gui.addFolder('Orbit Settings');
+				// folderOrbit.add(mesh_OrbitRing01_L01, 'tube')..min(-100).max(100).step(1).name('tube');
+
+				folderOrbit.add(mesh_OrbitRing05_L01.position, 'x').min(-50000).max(100000).step(1).name('Position-x');
+				folderOrbit.add(mesh_OrbitRing05_L01.position, 'y').min(-50000).max(100000).step(1).name('Position-y');
+				folderOrbit.add(mesh_OrbitRing05_L01.position, 'z').min(-50000).max(100000).step(1).name('Position-z');
+
+				folderOrbit.add(mesh_OrbitRing05_L01.scale, 'x').min(-100).max(100).step(1).name('Scale-x');
+				folderOrbit.add(mesh_OrbitRing05_L01.scale, 'y').min(-100).max(100).step(1).name('Scale-y');
+				folderOrbit.add(mesh_OrbitRing05_L01.scale, 'z').min(-100).max(100).step(1).name('Scale-z');
+
+				folderOrbit.add(mesh_OrbitRing05_L01.rotation, 'x').min(-360).max(360).step(1).name('Rotation-x');
+				folderOrbit.add(mesh_OrbitRing05_L01.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
+				folderOrbit.add(mesh_OrbitRing05_L01.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
+
+
 				const folderPositions = gui.addFolder('Positions')
 				const folderScale = gui.addFolder('TestObjectScale')
 				const folderRotation = gui.addFolder('TestObjectRotation')
@@ -1236,7 +1375,18 @@
 				mesh_timeSphere_L2.rotation.y = time * 0.0005;
 				mesh_Tube01.rotation.y = time * 0.0001
 				mesh_Torus01.rotation.z = time * 0.0001
-				particles.rotation.y = time * 0.0001
+
+				// Command Center Animations
+				particles.rotation.y = time * -0.0001
+				mesh_CCS_Ruler_L0.rotation.y = time * 0.0001
+				mesh_OrbitRing01_L01.rotation.y = time * 0.001
+				mesh_OrbitRing02_L01.rotation.x = time * 0.001
+				mesh_OrbitRing04_L01.rotation.y = time * 0.0001
+				// mesh_OrbitRing05_L01.rotation.y = time * 0.0001
+
+				// Gears
+				mesh_GoldGear01_L01.rotation.z = time * 0.001
+				
 
 				// Only for Testing
 				// mesh_gridbox_Tester.rotation.y = time * 0.0001;
