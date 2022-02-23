@@ -6,6 +6,10 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="./assets/css/main.css">
 		<style>
+			.lil-gui {
+				z-index: 2000;
+			}
+
 			#blocker {
 				position: absolute;
 				width: 100%;
@@ -56,12 +60,43 @@
 		#menu {
 			position: absolute;
 			bottom: 20px;
-      left: 10px;
+   left: 10px;
 			width: 25%;
 			text-align: left;
-      padding: 20px;
-      border: 1px solid rgba(0, 255, 179, 0.95);
-      box-shadow: 1px 1px 2px rgba(0, 255, 179);
+   padding: 20px;
+   border: 1px solid rgba(0, 255, 179, 0.95);
+   box-shadow: 1px 1px 2px rgba(0, 255, 179);
+		}
+
+		.tableCell {
+			width: 360px;
+			height: 360px;
+			box-shadow: 0px 0px 12px rgba(0, 255, 187, 0.87);
+			border: 1px solid rgba(0, 238, 255, 0.25);
+   background-color: rgba(0, 255, 187, 0.87);
+			font-family: Helvetica, sans-serif;
+			text-align: center;
+			line-height: normal;
+			cursor: default;
+		}
+
+
+		.tableCell:hover {
+			box-shadow: 0px 0px 12px rgba(247, 0, 255, 0.75);
+			border: 1px solid rgba(255, 127, 255, 0.75);
+			cursor: pointer;
+      /* transform: rotateY(150deg) */
+		}
+
+		.tableCellData {
+			position: absolute;
+			top: 40px;
+			left: 0px;
+			right: 0px;
+			font-size: 60px;
+			font-weight: bold;
+			color: rgba(0, 255, 208, 0.75);
+			text-shadow: 0 0 10px rgba(0, 255, 179, 0.95);
 		}
 
 		.element {
@@ -69,7 +104,7 @@
 			height: 360px;
 			box-shadow: 0px 0px 12px rgba(0, 255, 187, 0.87);
 			border: 1px solid rgba(0, 238, 255, 0.25);
-      background-color: rgba(0, 255, 187, 0.87);
+   background-color: rgba(0, 255, 187, 0.87);
 			font-family: Helvetica, sans-serif;
 			text-align: center;
 			line-height: normal;
@@ -120,6 +155,7 @@
 			background: transparent;
 			outline: 1px solid rgba(0, 255, 208, 0.75);
 			border: 0px;
+			border-radius: 20px;
 			padding: 5px 10px;
 			cursor: pointer;
 			animation: float 5s ease-in-out infinite;
@@ -146,6 +182,20 @@
       width: 25%;
     }
 
+		/* # Video */
+
+		
+		#video {
+			
+			position: static;
+  		border: 3px solid rgba(0, 255, 208, 0.75);
+			bottom: 50px;
+			margin-top: 50px;
+			background: rgba(0, 255, 208, 0.2);
+			
+
+		}
+
 
 
 		</style>
@@ -154,6 +204,8 @@
 		<div id="blocker">
 			<div id="VideoContainer" class="videoContainer"></div>
       <div id="container"></div>
+						<div id="containter2"></div>
+
       <!-- Menu -->
       <div id="menu">
 
@@ -163,7 +215,8 @@
         <button id="sphere">SPHERE</button>
         <button id="helix">HELIX</button>
         <button id="grid">GRID</button>
-        <button id="test01">TEST</button><br/>
+        <button id="table2">TEST</button><br/>
+				<video id="video" playsinline controls mute webkit-playsinline  autoplay width="320" height="240" src="./assets/video/DJMax_ClearBlueSky.mp4" style="border: 1px 1px black;"></video>
 
       </div>
 
@@ -177,7 +230,7 @@
 					Click to Enter
 				</p>
 				<p>
-					Move: WASD<br/>
+					Move: WASDF<br/>
 					Jump: SPACE<br/>
 					Look: MOUSE
 				</p>
@@ -317,16 +370,35 @@
 			'Og', 'Oganesson', '(294)', 18, 7
 		];
 
+		const table2 = [
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+			'space', 'space', 'space', 'cell', 'cell', 'cell', 'cell',
+		]
+
 			// Initial Variable Declarations
 			let camera, scene, renderer, cssrenderer, controls, textureLoader, object;
 
 			// Test Meshes
 			let mesh_gridbox_Tester, mesh_gridbox2_Tester, mesh_Tube01, mesh_Torus01
+			let mesh_gridbox3_Tester
+			let id
 
 			// Objects init
 			const objects = [];
-      // const objects = [];
-		  const targets = { table: [], sphere: [], helix: [], grid: [], testA1: [] };
+			const objectsTest = []
+   // const objects = [];
+		 const targets = { table: [], sphere: [], helix: [], grid: [], table2: [] };
+			const myTargets = { table: [], sphere: [], helix: [], grid: [] }
 
 			// Additional Variables Declarations
 			let raycaster;
@@ -413,8 +485,75 @@
 				const instructions = document.getElementById( 'instructions' );
 
 
-        // tableBeta
-        for (let i = 0; i < table.length; i += 5) {
+
+
+				// MyTable
+				for (let i = 0; i < table2.length; i += 1) {
+					const cell = document.createElement('div')
+					cell.className = 'tableCell'
+					cell.style.backgroundColor = 'rgba(230,230,230,' + (Math.random() * 0.5 + 0.25) + ')';
+					
+					const cellData = document.createElement('div')
+					cellData.className = 'tableCellData'
+					cellData.textContent = table2[i]
+					cell.appendChild(cellData)
+
+					const cellForm = document.createElement('form')
+					cellForm.className = 'cellForm'
+					cellForm.setAttribute('action', URL)
+					cellForm.setAttribute( 'method', 'post')
+					cellForm.setAttribute( 'hidden', 'true')
+					cell.appendChild(cellForm)
+
+					const cellFormInput = document.createElement('input')
+					cellFormInput.setAttribute('type', 'text')
+					cellFormInput.setAttribute('name', 'domainID')
+					cellFormInput.setAttribute('value', id)
+					cellForm.appendChild(cellFormInput)
+					cell.appendChild(cellForm)
+
+					const object2CSS = new CSS3DObject(cell);
+					object2CSS.position.x = Math.floor(i % 7) * 500 - 2000;
+				 object2CSS.position.y = ((Math.floor(i / 7) % 7) * 400) + 50000;
+				 object2CSS.position.z = 0;
+
+					scene.add(object2CSS);
+					objectsTest.push(object2CSS);
+
+					const object = new THREE.Object3D();
+				  object.position.x = (table2[i + 3] * 145) + 1330;
+				  object.position.y = -(table2[i + 4] * 180) + 80990;
+
+				  targets.table2.push(object);
+				} 
+
+
+				// Search.iFrameElement.Function
+				function iFrameElement (id, x, y, z, ry) {
+					const iframeDiv = document.createElement('div')
+					iframeDiv.style.width = '1280px'
+					iframeDiv.style.height = '800px'
+					iframeDiv.style.backgroundColor = 'rgb(255, 255, 255, 0.2)'
+
+					const iframeElement = document.createElement('iframe')
+					iframeElement.style.width = '1280px'
+					iframeElement.style.height = '800px'
+					iframeElement.style.border = '1px'
+					iframeElement.style.backgroundColor = 'rgb(255, 255, 255, 0.2)'
+					iframeElement.src = id
+					iframeDiv.appendChild(iframeElement)
+
+					const iFrameObject = new CSS3DObject(iframeDiv)
+					iFrameObject.position.set(x, y, z)
+					iFrameObject.rotation.y = ry
+
+					return iFrameObject
+
+				}
+
+
+      // tableBeta
+      for (let i = 0; i < table.length; i += 5) {
 
 				  const element = document.createElement('div');
 				  element.className = 'element';
@@ -437,7 +576,7 @@
 
 				  const objectCSS = new CSS3DObject(element);
 				  objectCSS.position.x = Math.random() * 4000 - 2000;
-				  objectCSS.position.y = Math.random() * 400000 - 2000;
+				  objectCSS.position.y = Math.random() * 800000 - 2000;
 				  objectCSS.position.z = Math.random() * 4000 - 2000;
 				  scene.add(objectCSS);
 
@@ -447,7 +586,7 @@
 
 				  const object = new THREE.Object3D();
 				  object.position.x = (table[i + 3] * 145) + 1330;
-				  object.position.y = -(table[i + 4] * 180) + 40990;
+				  object.position.y = -(table[i + 4] * 180) + 80990;
 
 				  targets.table.push(object);
 
@@ -526,7 +665,7 @@
           testObject.position.y = (- (Math.floor(i / 5) % 5) * 400) + 800;
           testObject.position.z = (Math.floor(i / 25) * 1000 - 2000);
 
-          targets.testA1.push(object);
+          targets.table2.push(object);
         }
 
 
@@ -645,35 +784,44 @@
 				document.addEventListener( 'keydown', onKeyDown );
 				document.addEventListener( 'keyup', onKeyUp );
 
-        const buttonTable = document.getElementById('table');
-			  buttonTable.addEventListener('click', function () {
+    const buttonTable = document.getElementById('table');
+				buttonTable.addEventListener('click', function () {
 
-				transform(targets.table, 2000);
+					transform(targets.table, 2000);
 
-			  });
+			 });
 
-			  const buttonSphere = document.getElementById('sphere');
-			  buttonSphere.addEventListener('click', function () {
+			 const buttonSphere = document.getElementById('sphere');
+			 buttonSphere.addEventListener('click', function () {
 
-				transform(targets.sphere, 2000);
+					transform(targets.sphere, 2000);
 
-			  });
+			 });
 
-			  const buttonHelix = document.getElementById('helix');
-			  buttonHelix.addEventListener('click', function () {
+				const buttonHelix = document.getElementById('helix');
+			 buttonHelix.addEventListener('click', function () {
 
-				transform(targets.helix, 2000);
+					transform(targets.helix, 2000);
 
-			  });
+			 });
 
-			  const buttonGrid = document.getElementById('grid');
-			  buttonGrid.addEventListener('click', function () {
+			 const buttonGrid = document.getElementById('grid');
+			 buttonGrid.addEventListener('click', function () {
 
-				transform(targets.grid, 2000);
+					transform(targets.grid, 2000);
 
-			  });
+			 });
 
-			  transform(targets.table, 2000);
+			 transform(targets.table, 2000);
+
+				const buttonTest = document.getElementById('table2');
+			 buttonGrid.addEventListener('click', function () {
+
+					transform(targets.table2, 2000);
+
+			 });
+
+			 // transform(targets.table2, 2000);
 
 				// Raycaster Function Setup
 				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
@@ -727,6 +875,19 @@
 				scene.add(mesh_gridbox2_Tester);
 				objects.push(mesh_gridbox2_Tester)
 
+				// Test for Grid Cube Size
+				// Center Tile Height?= x= -3405.99 y=2561.556 z=-3121.821
+				const geo_gridbox3_Tester = new THREE.BoxGeometry(500, 500, 500, 64, 64, 64)
+				const mat_gridbox3_Tester = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
+				mesh_gridbox3_Tester = new THREE.Mesh(geo_gridbox3_Tester, mat_gridbox3_Tester);
+				mat_gridbox3_Tester.transparent = false;
+				mat_gridbox3_Tester.alphaMap = testImg04;
+				mesh_gridbox3_Tester.position.set(-21628, 85323, -40228);
+				mesh_gridbox3_Tester.scale.set(26, 26, 26);
+				mesh_gridbox3_Tester.rotation.set(0, 0, 15)
+				scene.add(mesh_gridbox3_Tester);
+				objects.push(mesh_gridbox3_Tester)
+
 
 				const geo_Tube01 = new THREE.CylinderGeometry(5000, 5000, 500, 128, 1, true)
 				const mat_Tube01 = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
@@ -741,12 +902,12 @@
 
 
 				// 2nd param = Donut = 5000
-				const geo_Torus01 = new THREE.TorusGeometry(15000, 80000, 16, 32, Math.PI * 2 )
+				const geo_Torus01 = new THREE.TorusGeometry(15000, 15500, 16, 32, Math.PI * 2 )
 				const mat_Torus01 = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
 				mesh_Torus01 = new THREE.Mesh(geo_Torus01, mat_Torus01);
 				mat_Torus01.transparent = false;
 				mat_Torus01.alphaMap = testImg02;
-				mesh_Torus01.position.set(0, 40000, 0); // 9000 = floor w/o cut
+				mesh_Torus01.position.set(-100000, 40000, 0); // 9000 = floor w/o cut
 				mesh_Torus01.rotateX( - Math.PI / 2 );
 				// mesh_Torus01.scale.y = 90
 				scene.add(mesh_Torus01);
@@ -787,7 +948,16 @@
 				scene.add(particles);
 
 
-
+				// Search.VideoGeometry
+				const video = document.getElementById('video')
+				//Create your video texture:
+				const videoTexture = new THREE.VideoTexture(video);
+				const videoMaterial =  new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.DoubleSide, toneMapped: false} );
+				//Create screen
+				const screen = new THREE.SphereGeometry(3000, 32, 32);
+				const videoScreen = new THREE.Mesh(screen, videoMaterial);
+				videoScreen.position.set(0, 86873, -43328);
+				scene.add(videoScreen);
 
 				// // Video Group Test
 				// const VideoGroup = new THREE.Group();
@@ -799,6 +969,11 @@
 				// scene.add( VideoGroup );
 				
 
+				const groupTest01 = new THREE.Group()
+				// groupTest01.add( new iFrameElement('https://fish.com/embed', 2000, 5000, 0, 0))
+				groupTest01.add( new iFrameElement('https://docs.google.com/spreadsheets/d/1Xn_73_f2vB3GBVRsLjAafLlT2akClfjwLrBuyuPciVE/edit?usp=sharing', 0, 40000, 0, 0))
+
+				scene.add(groupTest01)
 
 
 
@@ -833,19 +1008,45 @@
 
 				// }
 
+				// Search_GUI
 				// GUI Options
-				const gui = new GUI();
+				const gui = new GUI(
+					{
+						width: 500,
+						hide: true
+					}
+				)
+
+				// Search.GUI.TestSettings.Main
+				const folderMainSettings = gui.addFolder('TestSettings')
+				
+				folderMainSettings.add(camera.position, 'x').min(-50000).max(50000).step(0.001).name('Camera-x')
+				folderMainSettings.add(camera.position, 'y').min(-50000).max(50000).step(0.001).name('Camera-y')
+				folderMainSettings.add(camera.position, 'z').min(-50000).max(50000).step(0.001).name('Camera-z')
+
+				// Search.GUI.TestSettings - Scale
+				folderMainSettings.add(videoScreen.position, 'x').min(-50000).max(100000).step(1).name('Position-x');
+				folderMainSettings.add(videoScreen.position, 'y').min(-50000).max(100000).step(1).name('Position-y');
+				folderMainSettings.add(videoScreen.position, 'z').min(-50000).max(100000).step(1).name('Position-z');
+
+				// Search.GUI.TestSettings.Scale
+
+				folderMainSettings.add(videoScreen.scale, 'x').min(-100).max(100).step(1).name('Scale-x');
+				folderMainSettings.add(videoScreen.scale, 'y').min(-100).max(100).step(1).name('Scale-y');
+				folderMainSettings.add(videoScreen.scale, 'z').min(-100).max(100).step(1).name('Scale-z');
+
+				// Search.GUI.TestSettings.Rotation
+				folderMainSettings.add(videoScreen.rotation, 'x').min(-100).max(100).step(1).name('Rotation-x');
+				folderMainSettings.add(videoScreen.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
+				folderMainSettings.add(videoScreen.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
+
+				const folderCamera = gui.addFolder('User Settings');
+				const folderPositions = gui.addFolder('Positions')
+				const folderScale = gui.addFolder('TestObjectScale')
+				const folderRotation = gui.addFolder('TestObjectRotation')
+
 
 				
-				const folderCamera = gui.addFolder('Camera');
-				folderCamera.add(camera.position, 'x').min(-50000).max(50000).step(0.001).name('x-camera')
-				folderCamera.add(camera.position, 'y').min(-50000).max(50000).step(0.001).name('y-camera')
-				folderCamera.add(camera.position, 'z').min(-50000).max(50000).step(0.001).name('z-camera')
-
-				const folderPositions = gui.addFolder('Positions')
-				folderPositions.add(mesh_Tube01.position, 'x').min(-5000).max(50000).step(0.001).name('x-position');
-				folderPositions.add(mesh_Tube01.position, 'y').min(-5000).max(50000).step(0.001).name('y-position');
-				folderPositions.add(mesh_Tube01.position, 'z').min(-5000).max(50000).step(0.001).name('z-position');
 
 
 				// CSS3DRenderer Config_01
