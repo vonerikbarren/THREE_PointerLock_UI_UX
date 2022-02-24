@@ -216,7 +216,7 @@
         <button id="helix">HELIX</button>
         <button id="grid">GRID</button>
         <button id="table2">TEST</button><br/>
-				<video id="video" playsinline controls muted webkit-playsinline  autoplay width="320" height="240" src="./assets/video/DJMax_ClearBlueSky.mp4" style="border: 1px 1px black;"></video>
+				<video id="video" playsinline controls muted webkit-playsinline  autoplay loop width="320" height="240" src="./assets/video/internet.mp4" style="border: 1px 1px black;"></video>
 
       </div>
 
@@ -488,9 +488,9 @@
 
 				const GridRuler01 = textureLoader.load('./assets/img/ui/coordinatePlane01.png')
 
-				const Clock01 = textureLoader.load('./assets/img/clocks/Clock02_NoHands01.png')
+				const Clock01 = textureLoader.load('./assets/img/clocks/ClockNoHands01.png')
 
-				const Clock02 = textureLoader.load('./assets/img/clocks/Clock03_A1.png')
+				const Clock02 = textureLoader.load('./assets/img/clocks/ClockNoHands02.png')
 
 				const GearTex01 = textureLoader.load('./assets/img/gears/GoldenGear01.png')
 
@@ -976,9 +976,10 @@
 				const videoTexture = new THREE.VideoTexture(video);
 				const videoMaterial =  new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.DoubleSide, toneMapped: false} );
 				//Create screen
-				const screen = new THREE.SphereGeometry(3000, 32, 32);
+				const screen = new THREE.BoxGeometry(3000, 3000, 3000, 32, 32);
 				const videoScreen = new THREE.Mesh(screen, videoMaterial);
-				videoScreen.position.set(0, 86873, -43328);
+				videoScreen.position.set(0, 13191, -4328);
+				videoScreen.scale.set(0.2, 0.2, 0.2)
 				scene.add(videoScreen);
 
 				// // Video Group Test
@@ -1272,7 +1273,8 @@
 				const gui = new GUI(
 					{
 						width: 300,
-						closed: true
+						closed: true,
+						hide: true,
 					}
 				)
 
@@ -1298,6 +1300,19 @@
 				folderMainSettings.add(mesh_mainPlatform_L01.rotation, 'x').min(-100).max(100).step(1).name('Rotation-x');
 				folderMainSettings.add(mesh_mainPlatform_L01.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
 				folderMainSettings.add(mesh_mainPlatform_L01.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
+
+				const folderVideo = gui.addFolder('Video Settings')
+				folderVideo.add(videoScreen.position, 'x').min(-50000).max(100000).step(1).name('Position-x');
+				folderVideo.add(videoScreen.position, 'y').min(-50000).max(100000).step(1).name('Position-y');
+				folderVideo.add(videoScreen.position, 'z').min(-50000).max(100000).step(1).name('Position-z');
+
+				folderVideo.add(videoScreen.scale, 'x').min(-100).max(100).step(1).name('Scale-x');
+				folderVideo.add(videoScreen.scale, 'y').min(-100).max(100).step(1).name('Scale-y');
+				folderVideo.add(videoScreen.scale, 'z').min(-100).max(100).step(1).name('Scale-z');
+
+				folderVideo.add(videoScreen.rotation, 'x').min(-360).max(360).step(1).name('Rotation-x');
+				folderVideo.add(videoScreen.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
+				folderVideo.add(videoScreen.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
 
 				const folderOrbit = gui.addFolder('Orbit Settings');
 				// folderOrbit.add(mesh_OrbitRing01_L01, 'tube')..min(-100).max(100).step(1).name('tube');
