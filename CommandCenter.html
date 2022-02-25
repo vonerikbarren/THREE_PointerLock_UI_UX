@@ -399,6 +399,14 @@
 			let mesh_OrbitRing03_L01, mesh_OrbitRing04_L01, mesh_OrbitRing05_L01
 			let mesh_Clock01_L01, mesh_GoldGear01_L01, mesh_GoldGear02_L01, mesh_GoldGear03_L01, mesh_GoldGear04_L01, mesh_GoldGear05_L01, mesh_GoldGear06_L01, mesh_GoldGear07_L01, mesh_GridRuler_L0
 
+			// ExcelDataTest
+			let mesh_ExcelHeader_L01
+			let mesh_LangRomance_L01
+			let mesh_LangAfrican_L01
+			let mesh_LangMiddleEast_L01
+			let mesh_LangEastEurope_L01
+			let mesh_LangAsian_L01
+
 			// Objects init
 			const objects = [];
 			const objectsTest = []
@@ -506,6 +514,21 @@
 
 				const GearTex07 = textureLoader.load('./assets/img/gears/GoldenGear07.png')
 
+				// --------------------------------------
+				// Search.LanguagesTest
+				// Languages From Excel Test
+				// --------------------------------------
+				const LangHeader = textureLoader.load('./assets/img/excel/LangChartTest/LangHeader.png')
+
+				const LangRomance = textureLoader.load('./assets/img/excel/LangChartTest/LangRomance.png')
+
+				const LangAfrican = textureLoader.load('./assets/img/excel/LangChartTest/LangAfrican.png')
+
+				const LangMiddleEast = textureLoader.load('./assets/img/excel/LangChartTest/LangMiddleEast.png')
+
+				const LangEastEurope = textureLoader.load('./assets/img/excel/LangChartTest/LangEastEurope.png')
+
+				const LangAsian = textureLoader.load('./assets/img/excel/LangChartTest/LangAsian.png')
 
 				// Particle Setup
 				const particleTexture01 = textureLoader.load('./assets/textures/textures_lib/particles/1.png')
@@ -925,10 +948,10 @@
 
 				// 2nd param = Donut = 5000
 				const geo_Torus01 = new THREE.TorusGeometry(15000, 15500, 16, 32, Math.PI * 2 )
-				const mat_Torus01 = new THREE.MeshBasicMaterial({ map: testImg02, side: THREE.DoubleSide });
+				const mat_Torus01 = new THREE.MeshBasicMaterial({ map: testImg05, side: THREE.DoubleSide });
 				mesh_Torus01 = new THREE.Mesh(geo_Torus01, mat_Torus01);
 				mat_Torus01.transparent = false;
-				mat_Torus01.alphaMap = testImg02;
+				mat_Torus01.alphaMap = testImg05;
 				mesh_Torus01.position.set(-100000, 40000, 0); // 9000 = floor w/o cut
 				mesh_Torus01.rotateX( - Math.PI / 2 );
 				// mesh_Torus01.scale.y = 90
@@ -1137,7 +1160,7 @@
 				const mainClockGroup01 = new THREE.Group()
 
 				const geo_Clock01_L01 = new THREE.CircleGeometry(1000, 1000)
-				const mat_Clock01_L01 = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide });
+				const mat_Clock01_L01 = new THREE.MeshStandardMaterial({ map: Clock02, side: THREE.DoubleSide });
 				mesh_Clock01_L01 = new THREE.Mesh(geo_Clock01_L01, mat_Clock01_L01);
 				mat_Clock01_L01.transparent = true;
 				mat_Clock01_L01.alphaMap = Clock02;
@@ -1229,6 +1252,84 @@
 				// mesh_GoldGear07_L01.scale.y = 90
 				mainClockGroup01.add(mesh_GoldGear07_L01)
 				CommandCenter.add(mainClockGroup01)
+
+
+				// ---------------------------
+				// Excel Data Wall
+				// ---------------------------
+
+				const ExcelDataWall = new THREE.Group()
+				ExcelDataWall.position.set(-3344, -4544, 2167)
+				ExcelDataWall.rotation.set(0, 14.1212, 0)
+
+				const geo_ExcelHeader_L01 = new THREE.PlaneGeometry(3000, 250)
+				const mat_ExcelHeader_L01 = new THREE.MeshStandardMaterial({ map: LangHeader, side: THREE.DoubleSide });
+				mesh_ExcelHeader_L01 = new THREE.Mesh(geo_ExcelHeader_L01, mat_ExcelHeader_L01);
+				mat_ExcelHeader_L01.transparent = false;
+				mat_ExcelHeader_L01.alphaMap = LangHeader;
+				mesh_ExcelHeader_L01.position.set(-2000, 22500, -4000); 
+				// mesh_ExcelHeader_L01.rotateX( - Math.PI / 2 );
+				mesh_ExcelHeader_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_ExcelHeader_L01)
+				CommandCenter.add(ExcelDataWall)
+
+				const geo_LangRomance_L01 = new THREE.PlaneGeometry(3000, 500)
+				const mat_LangRomance_L01 = new THREE.MeshStandardMaterial({ map: LangRomance, side: THREE.DoubleSide });
+				mesh_LangRomance_L01 = new THREE.Mesh(geo_LangRomance_L01, mat_LangRomance_L01);
+				mat_LangRomance_L01.transparent = false;
+				mat_LangRomance_L01.alphaMap = LangRomance;
+				mesh_LangRomance_L01.position.set(-2000, 21658, -4000); 
+				// mesh_LangRomance_L01.rotateX( - Math.PI / 2 );
+				mesh_LangRomance_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_LangRomance_L01)
+				CommandCenter.add(ExcelDataWall)
+
+				const geo_LangAfrican_L01 = new THREE.PlaneGeometry(3000, 500)
+				const mat_LangAfrican_L01 = new THREE.MeshStandardMaterial({ map: LangAfrican, side: THREE.DoubleSide });
+				mesh_LangAfrican_L01 = new THREE.Mesh(geo_LangAfrican_L01, mat_LangAfrican_L01);
+				mat_LangAfrican_L01.transparent = false;
+				mat_LangAfrican_L01.alphaMap = LangAfrican;
+				mesh_LangAfrican_L01.position.set(-2000, 20580, -4000); 
+				// mesh_LangAfrican_L01.rotateX( - Math.PI / 2 );
+				mesh_LangAfrican_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_LangAfrican_L01)
+				CommandCenter.add(ExcelDataWall)
+
+				const geo_LangMiddleEast_L01 = new THREE.PlaneGeometry(3000, 500)
+				const mat_LangMiddleEast_L01 = new THREE.MeshStandardMaterial({ map: LangMiddleEast, side: THREE.DoubleSide });
+				mesh_LangMiddleEast_L01 = new THREE.Mesh(geo_LangMiddleEast_L01, mat_LangMiddleEast_L01);
+				mat_LangMiddleEast_L01.transparent = false;
+				mat_LangMiddleEast_L01.alphaMap = LangMiddleEast;
+				mesh_LangMiddleEast_L01.position.set(-2000, 19502, -4000); 
+				// mesh_LangMiddleEast_L01.rotateX( - Math.PI / 2 );
+				mesh_LangMiddleEast_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_LangMiddleEast_L01)
+				CommandCenter.add(ExcelDataWall)
+
+				const geo_LangEastEurope_L01 = new THREE.PlaneGeometry(3000, 250)
+				const mat_LangEastEurope_L01 = new THREE.MeshStandardMaterial({ map: LangEastEurope, side: THREE.DoubleSide });
+				mesh_LangEastEurope_L01 = new THREE.Mesh(geo_LangEastEurope_L01, mat_LangEastEurope_L01);
+				mat_LangEastEurope_L01.transparent = false;
+				mat_LangEastEurope_L01.alphaMap = LangEastEurope;
+				mesh_LangEastEurope_L01.position.set(-2000, 18675, -4000); 
+				// mesh_LangEastEurope_L01.rotateX( - Math.PI / 2 );
+				mesh_LangEastEurope_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_LangEastEurope_L01)
+				CommandCenter.add(ExcelDataWall)
+
+				const geo_LangAsian_L01 = new THREE.PlaneGeometry(3000, 750)
+				const mat_LangAsian_L01 = new THREE.MeshStandardMaterial({ map: LangAsian, side: THREE.DoubleSide });
+				mesh_LangAsian_L01 = new THREE.Mesh(geo_LangAsian_L01, mat_LangAsian_L01);
+				mat_LangAsian_L01.transparent = false;
+				mat_LangAsian_L01.alphaMap = LangAsian;
+				mesh_LangAsian_L01.position.set(-2000, 17575, -4000); 
+				// mesh_LangAsian_L01.rotateX( - Math.PI / 2 );
+				mesh_LangAsian_L01.scale.set(2, 2, 0)
+				ExcelDataWall.add(mesh_LangAsian_L01)
+				CommandCenter.add(ExcelDataWall)
+
+
+
 				
 				
 
@@ -1277,6 +1378,10 @@
 						hide: true,
 					}
 				)
+
+				gui.closed = true;
+				gui.closed = false;
+				
 
 				// Search.GUI.TestSettings.Main
 				const folderMainSettings = gui.addFolder('TestSettings')
@@ -1357,8 +1462,18 @@
 				folderGears.add(	mesh_GoldGear01_L01.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
 
 
-				const folderRotation = gui.addFolder('TestObjectRotation')
-				
+				const folderExcel = gui.addFolder('Excel.languages')
+				folderExcel.add(	ExcelDataWall.position, 'x').min(-50000).max(100000).step(1).name('Position-x');
+				folderExcel.add(	ExcelDataWall.position, 'y').min(-50000).max(100000).step(1).name('Position-y');
+				folderExcel.add(	ExcelDataWall.position, 'z').min(-50000).max(100000).step(1).name('Position-z');
+
+				folderExcel.add(	ExcelDataWall.scale, 'x').min(-100).max(100).step(1).name('Scale-x');
+				folderExcel.add(	ExcelDataWall.scale, 'y').min(-100).max(100).step(1).name('Scale-y');
+				folderExcel.add(	ExcelDataWall.scale, 'z').min(-100).max(100).step(1).name('Scale-z');
+
+				folderExcel.add(	ExcelDataWall.rotation, 'x').min(-360).max(360).step(1).name('Rotation-x');
+				folderExcel.add(	ExcelDataWall.rotation, 'y').min(-100).max(100).step(1).name('Rotation-y');
+				folderExcel.add(	ExcelDataWall.rotation, 'z').min(-100).max(100).step(1).name('Rotation-z');
 
 				
 
